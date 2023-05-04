@@ -7,4 +7,10 @@ class User < ApplicationRecord
 
     has_secure_password
     has_many :blogs, dependent: :destroy
+
+    # Used for digesting password within our Tests
+    def self.digest(password)
+        BCrypt::Password.create(password)
+    end
+
 end
