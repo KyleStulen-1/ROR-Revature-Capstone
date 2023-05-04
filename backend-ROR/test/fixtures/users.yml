@@ -11,3 +11,9 @@ user2:
   password_digest: <%= BCrypt::Password.create('password2')%>
   first_name: 'Number'
   last_name: 'Two'
+
+jt_one:
+  email: "MyString"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  first_name: "MyString"
+  last_name: "MyString"
