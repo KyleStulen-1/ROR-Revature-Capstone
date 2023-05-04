@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { SyntheticEvent, useState } from "react";
 
 export default function Login(props: ILoginProps){
@@ -36,7 +37,16 @@ export default function Login(props: ILoginProps){
         }
     }
     
+=======
+import { useState } from "react";
+import { Form } from "react-router-dom";
+
+export default function Login (){
+
+>>>>>>> dc4d3b7646a9425d3dec85ca856c47fad7a0ad34
     return (
+        <>
         <h1>Login</h1>
+        </>
     )
 }

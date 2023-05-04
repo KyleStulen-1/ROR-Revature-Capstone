@@ -1,5 +1,7 @@
 export default function NewUser(){
     return (
-        <p></p>
+        <div>
+            <h1>Register</h1>
+        </div>
     )
 }
