@@ -76,6 +76,7 @@ GEM
     debug (1.7.2)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    docile (1.4.0)
     erubi (1.12.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -84,6 +85,7 @@ GEM
     io-console (0.6.0)
     irb (1.6.4)
       reline (>= 0.3.0)
+    jwt (2.7.0)
     loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -109,6 +111,10 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.14.3-x64-mingw-ucrt)
       racc (~> 1.4)
+    nokogiri (1.14.3-x86_64-linux)
+      racc (~> 1.4)
+    pg (1.5.3)
+    pg (1.5.3-x64-mingw-ucrt)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.2)
@@ -146,7 +152,14 @@ GEM
     rake (13.0.6)
     reline (0.3.3)
       io-console (~> 0.5)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.4)
     sqlite3 (1.6.2-x64-mingw-ucrt)
+    sqlite3 (1.6.2-x86_64-linux)
     thor (1.2.1)
     timeout (0.3.2)
     tzinfo (2.0.6)
@@ -160,14 +173,18 @@ GEM
 
 PLATFORMS
   x64-mingw-ucrt
+  x86_64-linux
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   debug
+  jwt (~> 2.7)
+  pg (~> 1.4)
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.3)
+  simplecov
   sqlite3 (~> 1.4)
   tzinfo-data
 

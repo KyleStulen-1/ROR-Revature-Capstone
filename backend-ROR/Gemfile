@@ -46,3 +46,8 @@ group :development do
   # gem "spring"
 end
 
+gem "jwt", "~> 2.7"
+
+gem "pg", "~> 1.4"
+
+gem 'simplecov', require: false, group: :test
