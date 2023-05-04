@@ -38,5 +38,5 @@ Revature capstone project for ruby on rails cohort
       
       git commit -m 'DESCRIPTIVE"
       
-      git push origin 'branchname'
+      git push -u origin 'branchname'
       
