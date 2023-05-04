@@ -3,7 +3,12 @@ require_relative '../../lib/json_web_token'
 
 class SessionController < ApplicationController
   def create
-    credentials = JSON.parse(request.body.read)
+    begin
+      credentials = JSON.parse(request.body.read)
+    rescue JSON::ParserError => e
+      puts e.message
+      return head :unauthorized
+    end
     user = User.where(email: credentials['email']).first
     return head :unauthorized unless user
 
