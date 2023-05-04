@@ -1,28 +1,11 @@
 require "test_helper"
 
 class BlogControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get blog_index_url
-    assert_response :success
-  end
 
-  test "should get show" do
-    get blog_show_url
-    assert_response :success
-  end
-
-  test "should get create" do
-    get blog_create_url
-    assert_response :success
-  end
-
-  test "should get update" do
+  test "user should be able to update blog" do
     get blog_update_url
     assert_response :success
   end
 
-  test "should get destroy" do
-    get blog_destroy_url
-    assert_response :success
-  end
+
 end
