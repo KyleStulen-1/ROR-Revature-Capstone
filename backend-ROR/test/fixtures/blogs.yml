@@ -3,10 +3,10 @@
 xtone:
   title: MyString
   content: MyString
-  view_count: 1
+  view_count: 3
   user: one
 
-two:
+xttwo:
   title: MyString
   content: MyString
   view_count: 1
