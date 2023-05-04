@@ -1,5 +1,5 @@
 export default function Login (){
     return (
-        <p></p>
+        <h1>Login</h1>
     )
 }
