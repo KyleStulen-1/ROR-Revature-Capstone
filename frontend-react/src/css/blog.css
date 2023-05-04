@@ -1,0 +1,20 @@
+.search-feature{
+    display: flex;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.blog{
+    max-width: 625px;
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    padding: 10px
+}
+
+.blog img{
+    max-width: 250px;
+    max-height: 450px;
+    margin: auto;
+}
