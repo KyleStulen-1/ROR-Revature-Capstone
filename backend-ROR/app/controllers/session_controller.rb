@@ -1,5 +1,18 @@
+# frozen_string_literal: true
+require_relative '../../lib/json_web_token'
+
 class SessionController < ApplicationController
   def create
+    credentials = JSON.parse(request.body.read)
+    user = User.where(email: credentials['email']).first
+    return head :unauthorized unless user
+
+    if user.authenticate(credentials['password'])
+      render json: { token: JsonWebToken.encode(user_id: user.id), first_name: user.first_name,
+                     last_name: user.last_name }, status: :created
+    else
+      head :unauthorized
+    end
   end
   def destroy
   end
