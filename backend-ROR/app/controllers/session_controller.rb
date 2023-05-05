@@ -6,15 +6,15 @@ class SessionController < ApplicationController
     begin
       credentials = JSON.parse(request.body.read)
     rescue JSON::ParserError => e
-      puts e.message
+      Rails.logger.error(e.message)
       return head :unauthorized
     end
     user = User.where(email: credentials['email']).first
     return head :unauthorized unless user
 
     if user.authenticate(credentials['password'])
-      render json: { token: JsonWebToken.encode(user_id: user.id), first_name: user.first_name,
-                     last_name: user.last_name }, status: :created
+      render json: { token: JsonWebToken.encode(user_id: user.id), user_id: user.id,
+                     first_name: user.first_name, last_name: user.last_name }, status: :created
     else
       head :unauthorized
     end
