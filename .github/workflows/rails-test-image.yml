@@ -1,8 +1,7 @@
 name: Rails Test Image
 
 on:
-  pull_request:
-    branches: [ "staging" ]
+  workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
