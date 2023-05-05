@@ -6,7 +6,7 @@ class SessionController < ApplicationController
     begin
       credentials = JSON.parse(request.body.read)
     rescue JSON::ParserError => e
-      puts e.message
+      Rails.logger.error(e.message)
       return head :unauthorized
     end
     user = User.where(email: credentials['email']).first

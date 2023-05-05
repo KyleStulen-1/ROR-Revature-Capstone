@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   resources :user, only: [:create, :destroy] do 
     
-    resources :blog
+    resources :blog do
+      put '/viewcount', to: "blog#update_viewcount"
+    end
   end
 
   get '/blog', to: 'blog#indexall'

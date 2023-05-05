@@ -19,6 +19,12 @@ dustynb1:
   first_name: 'Dustyn'
   last_name: 'Bachetti'
 
+dustynb2:
+   email: 'jd@revature.net'
+   password_digest: <%= User.digest('password1') %>
+   first_name: 'John'
+   last_name: 'Doe'
+
 user1:
   email: 'user1@email.com'
   password_digest: <%= BCrypt::Password.create('password1')%>
@@ -33,7 +39,15 @@ user2:
 
 
 jt_one:
-  email: "MyString"
+  id: 4
+  email: "j@gmail.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  first_name: "MyString"
+  last_name: "MyString"
+
+jt_two:
+  id: 5
+  email: "j2@gmail.com"
   password_digest: <%= BCrypt::Password.create('password') %>
   first_name: "MyString"
   last_name: "MyString"
