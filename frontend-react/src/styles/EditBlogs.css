@@ -12,3 +12,8 @@
 .content-width {
     width: 75vw;
 }
+
+.buttonspacing {
+    margin-left: 20px;
+    margin-right: 20px;
+} 
