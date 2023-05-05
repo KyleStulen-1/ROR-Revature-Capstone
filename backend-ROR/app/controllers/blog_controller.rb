@@ -2,6 +2,16 @@ class BlogController < ApplicationController
   include Authenticate
 
   def index
+    if params[:user_id].to_i == @current_user[:id]
+      myBlogs = Blog.where(user_id: @current_user)
+      if myBlogs == []
+        render json: { message: "No blogs found for user" }, status: :not_found
+      else
+        render json: myBlogs # need to test when create a blog is updated. created and updated dates are inproper format
+      end
+    else
+      render json: { message: "Invalid user. Token and id does not match" }, status: :unauthorized
+    end
   end
 
   def show
