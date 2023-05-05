@@ -15,7 +15,7 @@ const StyledBox = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '500px',
-    margin: '0 auto',
+    margin: '20px auto',
     padding: '16px',
     borderRadius: '4px',
     boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
@@ -30,13 +30,14 @@ const StyledButton = styled(Button)({
 
 {/* Defined functional component - accepts a single prop called onSubmit and returns a component that renders a form for creating a new blog post */}
 {/* Defined two state variables - that will use user input */}
-const NewBlog = ({ onSubmit }: Props) => {
+{/* = ({ onSubmit }: Props) => */}
+export default function NewBlog() {
     const[title,setTitle] = useState<any>();
     const [content, setContent] = useState<any>();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(title, content);
+        //onSubmit(title, content);
     }
     return (
         <StyledBox>
@@ -58,9 +59,8 @@ const NewBlog = ({ onSubmit }: Props) => {
         </StyledBox>
     );
 
-    };
+};
 
-    export default NewBlog;
 
 
 
