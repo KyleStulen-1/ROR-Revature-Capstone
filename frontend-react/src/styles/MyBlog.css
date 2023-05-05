@@ -1,0 +1,22 @@
+.header{
+    font-size: 30px;
+}
+
+.blogspacing{
+    margin: 20px 20vw;
+    
+}
+
+.buttonspacing {
+    margin-left: 20px;
+    margin-right: 20px;
+} 
+
+.updatedAt {
+    font-size: 12px;
+    padding-top: 5px;
+}
+
+.content {
+    margin-top: 5px;
+}
