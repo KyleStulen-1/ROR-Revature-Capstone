@@ -5,7 +5,6 @@ class UserController < ApplicationController
     user.password = params[:password]
     user.first_name = params[:first_name]
     user.last_name = params[:last_name]
-    user.save
     if user.save
       render json: {message: "User created successfully"}, status: 200
     else
