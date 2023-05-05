@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState } from "react";
 import { User } from "../models/user";
 import { Link } from "react-router-dom";
-//import { authenticate } from "../remote/services/session-service"; 
+import { authenticate } from "../remote/services/session-service"; 
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -33,31 +33,31 @@ export default function Login(props: ILoginProps){
         setPassword((e.target as HTMLInputElement).value);
     }
     
-    let submitLogin=() => {
-      console.log("Submit")
-    }
-
-    // let submitLogin = async (e: SyntheticEvent) => {
-    //     setErrorMessage('');
-    //     if (email && password && email.length > 3 && email.length < 17 && password.length > 7 && password.length < 21) {
-    //         console.log("success");
-    //         // try {
-    //         //     // let response = await authenticate({email, password});
-
-    //         //     if (response.status === 201) {
-    //         //         props.setCurrentUser(response.data);
-    //         //         sessionStorage.setItem('token', response.data.token);
-    //         //         setRedirect(true);
-    //         //     } else {
-    //         //         setErrorMessage('Email and/or password incorrect. Please try again.');
-    //         //     }
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     } else {
-    //         setErrorMessage("Emails must be between 4 and 16 characters. Passwords must be between 8 and 20 characters.")
-    //     }
+    // let submitLogin=() => {
+    //   console.log("Submit")
     // }
+
+    let submitLogin = async (e: SyntheticEvent) => {
+        setErrorMessage('');
+        if (email && password && email.length > 3 && email.length < 17 && password.length > 7 && password.length < 21) {
+            console.log("success");
+            try {
+                let response = await authenticate({email, password});
+
+                if (response.status === 201) {
+                    props.setCurrentUser(response.data);
+                    sessionStorage.setItem('token', response.data.token);
+                    setRedirect(true);
+                } else {
+                    setErrorMessage('Email and/or password incorrect. Please try again.');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            setErrorMessage("Emails must be between 4 and 16 characters. Passwords must be between 8 and 20 characters.")
+        }
+    }
     
     return (
         props.currentUser && redirect ?
