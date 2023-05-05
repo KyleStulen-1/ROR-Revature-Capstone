@@ -27,7 +27,15 @@ user2:
   last_name: 'Two'
 
 jt_one:
-  email: "MyString"
+  id: 4
+  email: "j@gmail.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  first_name: "MyString"
+  last_name: "MyString"
+
+jt_two:
+  id: 5
+  email: "j2@gmail.com"
   password_digest: <%= BCrypt::Password.create('password') %>
   first_name: "MyString"
   last_name: "MyString"

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative '../../../lib/json_web_token'
+# Include this module to automatically authenticate users using their token.
+# If authentication is successful, the current user can be accessed with @current_user
 module Authenticate
   extend ActiveSupport::Concern
 

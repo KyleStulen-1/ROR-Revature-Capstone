@@ -2,15 +2,25 @@ require "test_helper"
 require_relative '../../lib/json_web_token'
 
 class BlogControllerTest < ActionDispatch::IntegrationTest
-  # test "should get index" do
-  #   get blog_index_url
-  #   assert_response :success
-  # end
-  #
-  # test "should get show" do
-  #   get blog_show_url
-  #   assert_response :success
-  # end
+
+  test "should get index" do
+    user = users(:jt_one)
+    token = JsonWebToken.encode(user_id: user.id)
+    get "/user/#{user.id}/blog", headers: {Authorization: "Bearer #{token}"}, as: :json
+    assert_response :success
+  end
+  test "should get index but failed because of wrong id" do
+    user = users(:jt_one)
+    token = JsonWebToken.encode(user_id: user.id)
+    get "/user/1/blog", headers: {Authorization: "Bearer #{token}"}, as: :json
+    assert_response :unauthorized
+  end
+
+  test "should get show" do
+    get blog_show_url
+    assert_response :success
+  end
+
 
   test "should create" do
     user = users(:dustynb1).id
@@ -65,4 +75,6 @@ class BlogControllerTest < ActionDispatch::IntegrationTest
       assert_response :unauthorized
     end
   end
+
+
 end
