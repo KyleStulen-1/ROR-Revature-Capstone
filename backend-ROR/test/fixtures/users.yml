@@ -1,15 +1,23 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-two:
+xttwo:
   email: 'my@email.com'
   password_digest: <%= User.digest('user_2')%>
-  first_name: MyString
-  last_name: MyString
+  first_name: 'MyString'
+  last_name: 'MyString'
 
 xtone:
   email: 'MyString'
   password_digest: <%= User.digest('user_1')%>
-  first_name: MyString
-  last_name: MyString
+  first_name: 'MyString'
+  last_name: 'MyString'
+
+
+
+dustynb1:
+  email: 'dustyn821@revature.net'
+  password_digest: <%= User.digest('password1') %>
+  first_name: 'Dustyn'
+  last_name: 'Bachetti'
 
 user1:
   email: 'user1@email.com'
@@ -22,4 +30,11 @@ user2:
   password_digest: <%= BCrypt::Password.create('password2')%>
   first_name: 'Number'
   last_name: 'Two'
+
+
+jt_one:
+  email: "MyString"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  first_name: "MyString"
+  last_name: "MyString"
 

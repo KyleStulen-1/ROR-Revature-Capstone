@@ -9,7 +9,7 @@ class UserController < ApplicationController
     if user.save
       render json: user
     else
-      render json: user.errors
+      render status: 400, json: user.errors
     end
   end
 

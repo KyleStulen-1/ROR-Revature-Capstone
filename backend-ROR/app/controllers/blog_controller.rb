@@ -14,29 +14,40 @@ class BlogController < ApplicationController
   end
 
   def create
+    Rails.logger.info('Create action: Called')
+    input = JSON.parse(request.body.read) # Reads the body of the post request
+    Rails.logger.debug("Create action: Data read: #{input.inspect}")
+    # input[:user_id] = current_user.id # Obtains user id from token, forces proper ownership
+    @blog = Blog.new(input)
+    if @blog.save
+      render json: { message: 'Blog created' }, status: :created
+      Rails.logger.info('Create action: Data successfully added to table') # If the data is saved to the database
+    else # If user input is somehow wrong (eg. empty fields)
+      render json: { message: 'Invalid blog creation' }, status: :unprocessable_entity
+      Rails.logger.error('Create action: Input was invalid')
+    end
   end
 
   def update
     @logger.info('Finding record to update...')
 
     sample = JSON.parse(request.body.read)
-    
-    #find if blog exists on the database
-    record = Blog.find(sample['id'])
-    if record !=nil
-      @logger.info("Updating record on record #{sample['id']}")
+    #check the user
 
-      #update the time stamp
-      # date = Time.now.getutc
-      # sample.merge!({'updated_at'=> date})
+
+    #find if blog exists on the database
+    record = Blog.find(params['id'])
+    if record !=nil
+      @logger.info("Updating record on record #{params['id']}")
+
 
       #Update the record if possible
       if record.update(sample)
-        @logger.info("Successfully updated record at ID: #{sample['id']}!")
-        return {status: 200, body: {message: 'Blod updated successfully'}}
-        head :ok
+        @logger.info("Successfully updated record at ID: #{params['id']}!")
+        return {status: 200, body: {message: 'Blog updated successfully'}}
+        
       else
-        @logger.info("Failed to update record at ID: #{sample['id']}!")
+        @logger.info("Failed to update record at ID: #{params['id']}!")
         return {status: :unprocessable_entity, body: {message: 'Invalid email or password'}} 
       end
 
