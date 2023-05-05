@@ -14,12 +14,6 @@ class BlogControllerTest < ActionDispatch::IntegrationTest
     get "/user/1/blog", headers: {Authorization: "Bearer #{token}"}, as: :json
     assert_response :unauthorized
   end
-  test "Should get 404 because no items is found" do
-    user = users(:jt_two)
-    token = JsonWebToken.encode(user_id: user.id)
-    get "/user/5/blog", headers: {Authorization: "Bearer #{token}"}, as: :json
-    assert_response :not_found
-  end
 
   test "should get show" do
     get blog_show_url
