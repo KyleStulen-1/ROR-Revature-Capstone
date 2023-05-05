@@ -1,6 +1,18 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 
+xtone:
+  title: 'MyString'
+  content: 'MyString'
+  view_count: 3
+  user: xtone
+
+xttwo:
+  title: 'MyString'
+  content: 'MyString'
+  view_count: 1
+  user: xttwo
+
 dustynblog1:
   title: "DBtest1"
   content: "DBtest desc"
@@ -26,8 +38,8 @@ dustynblog2:
 #  user: two
 
 jt_one:
-    title: "Test"
-    content: "Test"
-    view_count: 1
-    user_id: 4
+  title: "Test"
+  content: "Test"
+  view_count: 1
+  user_id: 4
 
