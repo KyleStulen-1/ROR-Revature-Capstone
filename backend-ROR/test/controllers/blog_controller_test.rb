@@ -3,6 +3,7 @@ require_relative '../../lib/json_web_token'
 
 class BlogControllerTest < ActionDispatch::IntegrationTest
 
+
   test "should get index" do
     user = users(:jt_one)
     token = JsonWebToken.encode(user_id: user.id)
@@ -16,8 +17,12 @@ class BlogControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
+
   test "should get show" do
-    get blog_show_url
+    user = users(:dustynb1).id
+    token = JsonWebToken.encode(user_id: user)
+    blog = blogs(:dustynblog1).id
+    get user_blog_url(user, blog), headers: { Authorization: "Bearer #{token}" }, as: :json
     assert_response :success
   end
 
