@@ -1,11 +1,13 @@
 class BlogController < ApplicationController
 
+  include Authenticate
   def initialize
     super
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::DEBUG
 
   end
+  
 
   def index
   end
@@ -17,7 +19,7 @@ class BlogController < ApplicationController
     Rails.logger.info('Create action: Called')
     input = JSON.parse(request.body.read) # Reads the body of the post request
     Rails.logger.debug("Create action: Data read: #{input.inspect}")
-    # input[:user_id] = current_user.id # Obtains user id from token, forces proper ownership
+    input[:user_id] = current_user.id # Obtains user id from token, forces proper ownership
     @blog = Blog.new(input)
     if @blog.save
       render json: { message: 'Blog created' }, status: :created
@@ -59,5 +61,10 @@ class BlogController < ApplicationController
   end
 
   def destroy
+  end
+
+  def indexall
+    @blog = Blog.all
+    return json: {blogs: {@blog}}
   end
 end
