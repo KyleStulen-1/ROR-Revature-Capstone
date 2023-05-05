@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 import {useState} from "react";
 
-{/* Defined the props */}
+
 type Props ={
     onSubmit: (title:string, content:string) => void;
 };

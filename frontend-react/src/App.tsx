@@ -8,7 +8,7 @@ import NewBlog from "./components/NewBlog"
 import MyBlogs from "./components/MyBlogs"
 import NewUser from "./components/NewUser"
 import Login from "./components/Login";
-
+import EditBlogs from "./components/EditBlogs";
 import {User} from "./models/user"
 
 function App() {
@@ -21,9 +21,10 @@ function App() {
         <Routes>
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/newblog" element={<NewBlog />} />
+          <Route path="/editblogs/:id" element={<EditBlogs />} />
           <Route path="/myblogs" element={<MyBlogs />} />
-          <Route path="/newuser" element={<NewUser />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/newuser" element={<NewUser currentUser={principal}/>} />
+          <Route path="/login" element={<Login currentUser={principal} setCurrentUser={setPrincipal}/>} />
         </Routes>
       </BrowserRouter>
   );
