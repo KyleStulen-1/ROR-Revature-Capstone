@@ -12,8 +12,19 @@ module Authenticate
   private
 
   def authenticate_request
-    @current_user = User.find(JsonWebToken.decode(token)['user_id'])
-    render json: { error: 'Not Authorized' }, status: 401 unless @current_user
+    Rails.logger.debug("Authentication: Token: #{token}")
+    Rails.logger.info('Authentication: Authenticating token')
+    token_data = JsonWebToken.decode(token) # Decodes token and obtains user ID
+    Rails.logger.debug("Authentication: Current user: #{token_data.inspect}")
+    if token_data == 'Invalid Token'
+      render json: { error: 'Not Authorized' }, status: 401
+    elsif token_data == 'Expired Token'
+      render json: { error: 'Token is expired. Please login again.' }, status: 401
+    else
+      @current_user = User.find(token_data['user_id'])
+    end
+    # @current_user = User.find(JsonWebToken.decode(token)['user_id'])
+    # render json: { error: 'Not Authorized' }, status: 401 unless @current_user
   end
 
   def token

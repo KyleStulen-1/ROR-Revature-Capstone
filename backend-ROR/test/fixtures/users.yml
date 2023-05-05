@@ -8,6 +8,12 @@ dustynb1:
   first_name: 'Dustyn'
   last_name: 'Bachetti'
 
+dustynb2:
+   email: 'jd@revature.net'
+   password_digest: <%= User.digest('password1') %>
+   first_name: 'John'
+   last_name: 'Doe'
+
 user1:
   email: 'user1@email.com'
   password_digest: <%= BCrypt::Password.create('password1')%>
