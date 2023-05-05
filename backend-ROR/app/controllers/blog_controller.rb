@@ -37,4 +37,7 @@ class BlogController < ApplicationController
 
   def destroy
   end
+
+  def indexall
+  end
 end
