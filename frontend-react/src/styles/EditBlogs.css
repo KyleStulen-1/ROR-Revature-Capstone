@@ -1,0 +1,14 @@
+.page-spacing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding:35px;
+}
+
+.data{
+    padding:15px;
+}
+
+.content-width {
+    width: 75vw;
+}
