@@ -11,3 +11,10 @@
 #  content: MyString
 #  view_count: 1
 #  user: two
+
+jt_one:
+    title: "Test"
+    content: "Test"
+    view_count: 1
+    user_id: 4
+
