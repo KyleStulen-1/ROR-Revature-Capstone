@@ -1,0 +1,30 @@
+name: s3 upload
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+      - name: Installing Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.16.0"
+      - name: Installing dependencies
+        run: npm ci
+      - name: Building project
+        run: npm run build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_RAILS_REGION }}
+
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync ./build/ ${{secrets.AWS_S3_PROJECT_NAME }} --delete
