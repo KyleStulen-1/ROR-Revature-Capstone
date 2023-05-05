@@ -65,6 +65,6 @@ class BlogController < ApplicationController
 
   def indexall
     @blog = Blog.all
-    return json: {blogs: {@blog}}
+    return json: {blogs: @blog}
   end
 end
