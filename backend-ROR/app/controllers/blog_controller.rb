@@ -5,6 +5,18 @@ class BlogController < ApplicationController
   end
 
   def show
+    Rails.logger.info('Show action: Called')
+    @user = User.find(params[:user_id])
+    return render json: { message: 'User does not exist' }, status: :unprocessable_entity unless @user
+    Rails.logger.debug("Show action: User: #{@user.id}")
+    @blog = @user.blogs.find(params[:id])
+    if @blog
+      Rails.logger.debug("Show action: Blog: #{@blog.id}")
+      render json: {blog: @blog}, status: :ok
+    else
+      render json: { message: 'Blog does not exist' }, status: :unprocessable_entity
+      Rails.logger.error('Show action: Input was invalid')
+    end
   end
 
   def create

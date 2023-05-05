@@ -11,3 +11,15 @@
 #  content: MyString
 #  view_count: 1
 #  user: two
+
+dustynblog1:
+  title: "DBtest1"
+  content: "DBtest desc"
+  view_count: 10
+  user: dustynb1
+
+dustynblog2:
+  title: "DBtest2"
+  content: "DBtest desc"
+  view_count: 11
+  user: dustynb2
