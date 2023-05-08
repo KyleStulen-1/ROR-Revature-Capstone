@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .header{
     font-size: 30px;
 }
@@ -19,4 +20,38 @@
 
 .content {
     margin-top: 5px;
+=======
+.header{
+    font-size: 30px;
+}
+
+.blogspacing{
+    margin: 20px 20vw;
+    
+}
+
+.buttonspacing {
+    margin-left: 20px;
+    margin-right: 20px;
+} 
+
+.grid-div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-gap: 20px;
+}
+
+.name-font {
+    font-size: 25px;
+}
+
+.updatedAt {
+    font-size: 12px;
+    padding-top: 5px;
+    padding-bottom: 25px;
+}
+
+.content {
+    margin-top: 5px;
+>>>>>>> 743bf0350aea38cba43c78ba5dbcb193a6dab212
 }
