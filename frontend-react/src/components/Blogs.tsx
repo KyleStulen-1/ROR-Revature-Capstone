@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Blog, BlogAuthor } from "../models/blog";
+import { authAppClient } from "../remote/authenticated-app-client";
 
 import "../css/blog.css"
 
@@ -29,19 +30,15 @@ export default function Blogs (){
     useEffect(()=>{
         (async ()=>{
             // Await for all blogs here
-
             // Sort blogs by created/updated dates
 
-            const sortedBlogs = testBlogs.sort( (b1,b2) => 
+            const response = await authAppClient.get<BlogAuthor[]>('/blog')
+            const sortedBlogs = response.data.sort( (b1,b2) =>
                 Date.parse(b2.updated_at) - Date.parse(b1.updated_at)
-                // if(b1.updated_at === ""){
-                //     const result = Date.parse(b1.created_at) - Date.parse(b2.created_at)
-                //     return result;
-                // }
             )
 
             setBlogs(sortedBlogs)
-            setFBlogs(testBlogs);
+            setFBlogs(sortedBlogs);
         })();
     }, [])
 
