@@ -10,23 +10,22 @@ class BlogController < ApplicationController
   
 
   def index
-    if params[:user_id].to_i == @current_user[:id]
-      myBlogs = Blog.where(user_id: @current_user)
-      render json: myBlogs # need to test when create a blog is updated. created and updated dates are inproper format
-    else
-      render json: { message: "Invalid user. Token and id does not match" }, status: :unauthorized
-    end
+    myBlogs = Blog.includes(:user).where(user_id: params[:user_id])
+    render json: myBlogs.as_json({ include: { user: { only: [:first_name, :last_name] } } }) # need to test when create a blog is updated. created and updated dates are inproper format
   end
 
   def show
     Rails.logger.info('Show action: Called')
     @user = User.find(params[:user_id])
     return render json: { message: 'User does not exist' }, status: :unprocessable_entity unless @user
+
     Rails.logger.debug("Show action: User: #{@user.id}")
     @blog = @user.blogs.find(params[:id])
     if @blog
+      blog = @blog.as_json
+      blog[:user] = @user.as_json({ only: [:first_name, :last_name] })
       Rails.logger.debug("Show action: Blog: #{@blog.id}")
-      render json: @blog, status: :ok
+      render json: blog, status: :ok
     else
       render json: { message: 'Blog does not exist' }, status: :unprocessable_entity
       Rails.logger.error('Show action: Input was invalid')
@@ -118,8 +117,8 @@ class BlogController < ApplicationController
   end
 
   def indexall
-    @blog = Blog.all
-    return render json: @blog
+    @blogs = Blog.includes(:user)
+    return render json: @blogs.as_json(include: { user: { only: %i[first_name last_name] } })
   end
 
   private
