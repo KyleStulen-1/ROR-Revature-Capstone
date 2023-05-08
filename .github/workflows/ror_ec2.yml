@@ -1,6 +1,6 @@
 # rails testing on EC2
 
-name: "Ruby on Rails CI"
+name: "Ruby on Rails CI part2"
 
 on:
   workflow_dispatch:
