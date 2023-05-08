@@ -21,8 +21,8 @@ function App() {
         <Routes>
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/newblog" element={<NewBlog />} />
-          <Route path="/editblogs/:id" element={<EditBlogs />} />
-          <Route path="/myblogs" element={<MyBlogs />} />
+          <Route path="/editblogs/:id" element={<EditBlogs currentUser={principal}/>} />
+          <Route path="/myblogs" element={<MyBlogs currentUser={principal} />} />
           <Route path="/newuser" element={<NewUser currentUser={principal}/>} />
           <Route path="/login" element={<Login currentUser={principal} setCurrentUser={setPrincipal}/>} />
         </Routes>
