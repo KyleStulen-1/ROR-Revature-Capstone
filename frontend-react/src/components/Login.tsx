@@ -1,16 +1,13 @@
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import { User } from "../models/user";
 import { Link } from "react-router-dom";
 import { authenticate } from "../remote/services/session-service"; 
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {styled} from "@mui/system";
 import TextField from "@mui/material/TextField";
-import {AxiosError} from "axios";
+
 
 interface ILoginProps{
     currentUser: User | undefined;
@@ -40,9 +37,8 @@ export default function Login(props: ILoginProps){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [redirect, setRedirect] = useState(false);
 
-    let submitLogin = async (e: SyntheticEvent) => {
+    let submitLogin = async () => {
         setErrorMessage('');
         if (password) {
             try {
@@ -51,7 +47,6 @@ export default function Login(props: ILoginProps){
                 if (response.status === 201) {
                     props.setCurrentUser(response.data);
                     sessionStorage.setItem('token', response.data.token);
-                    setRedirect(true);
                 }
             } catch (err : any) {
                 if (err.response.status === 401) {
@@ -67,7 +62,7 @@ export default function Login(props: ILoginProps){
     }
     
     return (
-        props.currentUser && redirect ?
+        props.currentUser ?
         <Link to='/blogs' />
         :
         <StyledBox>
