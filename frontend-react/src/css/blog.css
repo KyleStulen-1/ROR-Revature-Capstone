@@ -109,3 +109,19 @@
     color:#414141;
     margin-top: 200px;
 }
+
+.blogInfo{
+    text-align: right;
+}
+
+#viewcount{
+    color: #3395f7;
+    font-weight: 700;
+}
+
+#readMore{
+    padding: 5px;
+    background-color: #3395f7;
+    color: white;
+    font-weight: 400;
+}

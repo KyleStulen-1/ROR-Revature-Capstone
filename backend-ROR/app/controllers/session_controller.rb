@@ -19,6 +19,4 @@ class SessionController < ApplicationController
       head :unauthorized
     end
   end
-  def destroy
-  end
 end

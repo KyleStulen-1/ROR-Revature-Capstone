@@ -7,8 +7,7 @@ Rails.application.routes.draw do
   # get 'user/create'
   # get 'user/destroy'
 
-  resources :user, only: [:create, :destroy] do 
-    
+  resources :user, only: [:create, :destroy] do
     resources :blog do
       put '/viewcount', to: "blog#update_viewcount"
     end
@@ -16,7 +15,6 @@ Rails.application.routes.draw do
 
   get '/blog', to: 'blog#indexall'
   post '/login', to: 'session#create'
-  delete '/logout', to: 'session#destroy'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
