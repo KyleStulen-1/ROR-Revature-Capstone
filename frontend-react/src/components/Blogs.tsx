@@ -170,4 +170,3 @@ function formatDate(dateString:string) {
 
     return f_content;
   }
- 

@@ -2,8 +2,8 @@
 
 class JsonWebToken
   def self.encode(payload)
-    exp = 24.hour.from_now.to_i
-    JWT.encode(payload, Rails.application.secret_key_base, 'HS256', exp: exp)
+    payload[:exp] = 24.hour.from_now.to_i
+    JWT.encode(payload, Rails.application.secret_key_base, 'HS256')
   end
 
   def self.decode(token)
