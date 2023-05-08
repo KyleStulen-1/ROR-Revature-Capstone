@@ -3,40 +3,47 @@ import { Blog, BlogAuthor } from "../models/blog";
 import { authAppClient } from "../remote/authenticated-app-client";
 
 import "../css/blog.css"
+import { updateViewCount } from "../remote/services/blog-service";
 
-const testBlogs: BlogAuthor[] = (
-    [{id: 1, title: "Intro to React", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.", created_at:"05/14/2023", updated_at:"05/14/2023", view_count:10, first_name:"Jane", last_name:"Doe", email:"test1@email.com"
-},
-{id: 2, title: "Error Handling in Ruby", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.", created_at:"05/05/2023", updated_at:"05/06/2023", view_count:10, first_name:"Billy", last_name:"Smith", email:"test2@email.com"
-},
-{id: 3, title: "What is CI/CD?", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.", created_at:"05/20/2023", updated_at:"05/20/2023", view_count:10, first_name:"Marcus", last_name:"Smith", email:"test3@email.com"
-},
-{id: 4, title: "AWS EC2: What is it? How to set it up.", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Ut tortor pretium viverra suspendisse. Non quam lacus suspendisse faucibus interdum. Elit at imperdiet dui accumsan sit. Ultrices dui sapien eget mi proin sed libero. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Phasellus egestas tellus rutrum tellus. Vel orci porta non pulvinar neque laoreet suspendisse. Convallis posuere morbi leo urna molestie at elementum eu.", created_at:"04/06/2023", updated_at:"04/06/2023", view_count:10, first_name:"James", last_name:"Smith", email:"test3@email.com"
-}
-]
-)
 
 export default function Blogs (){
 
-    const [blogs, setBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", first_name:"", last_name:"", email:""}]);
+    const [blogs, setBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", user_id:0, user:{first_name:"", last_name:""},readMore:false }]);
 
     // may need a diff useState for the filtered blogs
-    const [fBlogs, setFBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", first_name:"", last_name:"", email:""}]);
+    const [fBlogs, setFBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", user_id:0, user:{first_name:"", last_name:""},readMore:false}]);
     
 
     const [author, setAuthor] = useState<string>("");
     const [searchTerm, setSearchTerm] = useState<string>("");
-
+    const [selectedBlog, setSelectedBlog] = useState<Boolean[]>([]);
+    
+    
     useEffect(()=>{
         (async ()=>{
             // Await for all blogs here
             // Sort blogs by created/updated dates
 
             const response = await authAppClient.get<BlogAuthor[]>('/blog')
+            console.log(response)
             const sortedBlogs = response.data.sort( (b1,b2) =>
                 Date.parse(b2.updated_at) - Date.parse(b1.updated_at)
             )
+            console.log(response);
+            
 
+            // for(var i = 0; i <blogs.length; i++){
+            //     where selectedBlog[i] = setSelectedBlog(false)
+                
+            // }
+
+            sortedBlogs.forEach((b)=>{
+                b.readMore=false
+                // setSelectedBlog(()=>{
+                //     selectedBlog?.push(false)
+                // });
+            
+            })
             setBlogs(sortedBlogs)
             setFBlogs(sortedBlogs);
         })();
@@ -46,13 +53,60 @@ export default function Blogs (){
         if(searchTerm){
 
             const filteredBlogs = blogs.filter(b =>
-                `${b.first_name} ${b.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()));
+                `${b.user.first_name} ${b.user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()));
             console.log(filteredBlogs)
             setFBlogs( () => filteredBlogs );    
         } else {
             setFBlogs(() => []);
         }
     }
+
+    async function handleReadmore(blog:BlogAuthor){
+
+        const blogIndex = fBlogs.indexOf(blog);
+        const updatedBlogs = [...fBlogs];
+        
+        updatedBlogs[blogIndex] = {
+        ...updatedBlogs[blogIndex],
+        readMore: !updatedBlogs[blogIndex].readMore
+        };
+        console.log("STATE2")
+        
+        //-------
+        
+        if(updatedBlogs[blogIndex].readMore)
+        {
+        await updateViewCount(blog.user_id, blog.id)
+        updatedBlogs[blogIndex] = {
+            ...updatedBlogs[blogIndex],
+            view_count: updatedBlogs[blogIndex].view_count
+            }
+        
+        }
+        setFBlogs(updatedBlogs);
+        setBlogs(updatedBlogs)
+    }
+
+    function retreieveContent(bID:number)
+    {
+      const blog=blogs.filter(b=>b.id===bID)
+      console.log("RETREIEVE CONTENT: "+blog[0].readMore);
+      if(blog[0].readMore)
+      {
+        return "TRUE"+blog[0].content
+      }
+      else
+      {
+        return "FALSE"+blog[0].content.slice(0,10).concat("...");
+      }
+      //return blog[0].content
+    }
+
+
+
+
+
+
 
     return (<>
 
@@ -68,18 +122,29 @@ export default function Blogs (){
                     <div key = {b.id} className="blog">
                     <div className="author-info">
                         <p id="blog-title">{b.title}</p>
-                        <p id="author-date">{b.created_at}</p>
+                        <p id="author-date">{formatDate(b.updated_at)}</p>
                     </div>
                     <div className="name-container">
-                        <p id="author-name">{b.first_name} {b.last_name}</p>
+                         <p id="author-name">{b.user.first_name} {b.user.last_name}</p>
+                        
                     </div>
                     
                     <div id="content">
-                        <p id="blog-content">{b.content}</p>
+                        <p>{retreieveContent(b.id)}</p>
+                        
                     </div>
                     <div className="reaction-buttons">
+                        
+                         <button id="readMore" onClick={()=>handleReadmore(b)}>{ b.readMore?"Collapse":"Read More"}</button> 
+                    </div>
+                    {/* <div className="reaction-buttons">
+                    
                         <button id="thumbs-up">👍</button>
                         <button id="thumbs-down">👎</button>
+                    </div> */}
+                    <div className="blogInfo">
+                    <p>viewed <span id="viewcount"> {b.view_count}</span> times</p>
+                    
                     </div>
                 </div>
             )) : <p id="search-msg">No Blogs Found</p>
@@ -90,3 +155,18 @@ export default function Blogs (){
         </>)
 }
 
+function formatDate(dateString:string) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+  
+  function formatContent(inCont: string)
+  {
+    const f_content = inCont.slice(0,50).concat("...");
+
+    return f_content;
+  }
