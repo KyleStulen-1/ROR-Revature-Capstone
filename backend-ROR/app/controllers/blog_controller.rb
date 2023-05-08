@@ -107,7 +107,7 @@ class BlogController < ApplicationController
     @blog = Blog.find(params[:id])
     if owns?
       Rails.logger.info('Delete Action: Authorized')
-      @blog.delete
+      @blog.destroy
       head :ok
       Rails.logger.info('Delete Action: Blog deleted from database')
     else
