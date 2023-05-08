@@ -1,0 +1,81 @@
+# rails testing on EC2
+
+name: "Ruby on Rails CI"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    defaults:
+      run:
+        working-directory: backend-ROR
+    runs-on: ubuntu-latest
+    # normally if you have a server based db engine you put that under `services:` in this portion
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install SQLite3
+        run: sudo apt-get update && sudo apt-get install -y sqlite3
+        
+      # Add or replace dependencies in this section
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+        with:
+          ruby-version: '3.2.2'
+          bundler-cache: true
+          
+      - name: Install dependencies
+        run: bundle install
+
+      # Add or replace db setup steps below
+      - name: Setup database schema
+        run: rails db:migrate RAILS_ENV=test 
+
+      - name: Upload Code Coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage
+          path: coverage/
+
+      # tests are completed so beginning process of moving this into the web
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Get Current Date
+        run: echo ::set-output name=date::$(date +%Y%m%d%H%M)
+        id: date
+
+      - name: Build and Push
+        uses: docker/build-push-action@v4
+        with:
+          # these images are in dockerhub and we are trying to remote add the files into the EC2 instance
+          context: .
+          file: DockerfileRailsLive
+          push: true
+          # by the way, steps.<step_id>.outputs.<output_name> utilizes the id: date you declared earlier within 'Get Current Date'
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/rails-live
+            ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:${{ steps.date.outputs.date }}
+      - name: Setup the SSH
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_RUBY_EC2 }}
+        # "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_RAILS_URL }} "if sudo docker inspect ruby-app >/dev/null 2>&1; then sudo docker stop ruby-app && sudo docker rm ruby-app; fi && sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && sudo docker run -d -p 3000:3000 --name ruby-app ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest"
+       
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_RAILS_URL }} "if sudo docker inspect ruby-app >/dev/null 2>&1; then sudo docker stop ruby-app && sudo docker rm ruby-app; fi && sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && sudo docker run -d -p 3000:3000 --name ruby-app ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest"

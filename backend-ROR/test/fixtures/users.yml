@@ -1,0 +1,54 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+xttwo:
+  email: 'my@email.com'
+  password_digest: <%= User.digest('user_2')%>
+  first_name: 'MyString'
+  last_name: 'MyString'
+
+xtone:
+  email: 'MyString'
+  password_digest: <%= User.digest('user_1')%>
+  first_name: 'MyString'
+  last_name: 'MyString'
+
+
+
+dustynb1:
+  email: 'dustyn821@revature.net'
+  password_digest: <%= User.digest('password1') %>
+  first_name: 'Dustyn'
+  last_name: 'Bachetti'
+
+dustynb2:
+   email: 'jd@revature.net'
+   password_digest: <%= User.digest('password1') %>
+   first_name: 'John'
+   last_name: 'Doe'
+
+user1:
+  email: 'user1@email.com'
+  password_digest: <%= BCrypt::Password.create('password1')%>
+  first_name: 'Number'
+  last_name: 'One'
+
+user2:
+  email: 'user2@email.com'
+  password_digest: <%= BCrypt::Password.create('password2')%>
+  first_name: 'Number'
+  last_name: 'Two'
+
+
+jt_one:
+  id: 4
+  email: "j@gmail.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  first_name: "MyString"
+  last_name: "MyString"
+
+jt_two:
+  id: 5
+  email: "j2@gmail.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  first_name: "MyString"
+  last_name: "MyString"
+

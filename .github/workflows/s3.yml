@@ -1,9 +1,11 @@
 name: s3 upload
 
+#on:
+#  push:
+#    branches:
+#      - "main"
 on:
-  push:
-    branches:
-      - "main"
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -17,8 +19,13 @@ jobs:
           node-version: "18.16.0"
       - name: Installing dependencies
         run: npm ci
+        working-directory: frontend-react
       - name: Building project
         run: npm run build
+        #REMOVE WHEN PROJECT IS DONE
+        env:
+          CI: false
+        working-directory: frontend-react
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -28,3 +35,4 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./build/ ${{secrets.AWS_S3_PROJECT_NAME }} --delete
+        working-directory: frontend-react
