@@ -61,6 +61,7 @@ export default function NewUser(props: IUserCreateProps){
 
                 if (response.status == 201) {
                     console.log("User created")
+                    navigate('/blogs')
                 }
             } catch (err: any) {
                 console.log(err)
