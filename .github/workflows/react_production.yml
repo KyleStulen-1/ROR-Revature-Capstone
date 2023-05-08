@@ -1,4 +1,4 @@
-name: docker react test
+name: "docker react test"
 
 on:
   workflow_dispatch:
