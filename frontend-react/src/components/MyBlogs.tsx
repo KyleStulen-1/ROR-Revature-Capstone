@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/MyBlog.css';
 import { Button } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { authAppClient } from '../remote/authenticated-app-client';
 // import axios from 'axios'
 
 type Blog = {
@@ -44,31 +45,34 @@ export default function MyBlogs (){
     }
 
     // Axios delete function replace with say hello
-    // async function deleteBlog(id: string) {
-    //     try {
-    //      const response = await axios.delete(`/blogs/${id}`)
-    //         setOpen(false)
-    //       return response.data;
-    //     }
-    //      catch(error) {
-    //       console.error(error);
-    //         setOpen(false)
-    //     }
-    // }
+    async function deleteBlog(id: string) {
+        try {
+         const response = await authAppClient.delete(`/blogs/${id}`)
+            setOpen(false)
+          return response.data;
+        }
+         catch(error) {
+          console.error(error);
+            setOpen(false)
+        }
+    }
 
     return (
         <>
+        <div className = 'blogspacing'>
+        <div>UserName's Blogs</div>
         {content.map(content => (
-            <div className = 'blogspacing'>
+            <div >
+                
                 <div>
                     <span className='header'> { content.title } </span> 
-                    <Button className ='buttonspacing' onClick={() => handleEdit(content.id)}> Edit</Button> 
-                    <Button  className ='buttonspacing' color="error" onClick={() => setOpen(true)}> Delete</Button>
+                    <span className ='buttonspacing'><Button  variant="contained" onClick={() => handleEdit(content.id)}> Edit</Button></span> 
+                    <span className ='buttonspacing'><Button  variant="contained" color="error" onClick={() => setOpen(true)}> Delete</Button></span>
                 </div>
-                <div>
+                <div className='content'>
                     {content.content}
                 </div>
-                <div>Updated At: {formatDate(content.updated_at)}</div>
+                <div className='updatedAt'>Updated At: {formatDate(content.updated_at)}</div>
             </div>
     ))}
 
@@ -83,6 +87,7 @@ export default function MyBlogs (){
           <Button onClick={sayHello} color="error">Delete</Button>
         </DialogActions>
       </Dialog>
+      </div>
         </>
     )
 }

@@ -64,8 +64,8 @@ console.log(id)
         />
         </div>
         <div>
-            <Button>Submit</Button>
-            <Button onClick={() => handleNavigate()}>My Blogs</Button>
+            <span className='buttonspacing'><Button variant="contained" >Submit</Button></span>
+            <span className='buttonspacing'><Button variant="contained" onClick={() => handleNavigate()}>My Blogs</Button></span>
         </div>
     </div>
   )

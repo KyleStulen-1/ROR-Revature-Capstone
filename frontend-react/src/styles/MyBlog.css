@@ -8,6 +8,15 @@
 }
 
 .buttonspacing {
-    margin-left: 10px;
-    margin-right: 10px;
-}     
+    margin-left: 20px;
+    margin-right: 20px;
+} 
+
+.updatedAt {
+    font-size: 12px;
+    padding-top: 5px;
+}
+
+.content {
+    margin-top: 5px;
+}

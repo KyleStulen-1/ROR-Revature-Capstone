@@ -39,7 +39,7 @@ export default function Login(props: ILoginProps){
 
     let submitLogin = async (e: SyntheticEvent) => {
         setErrorMessage('');
-        if (email && password && email.length > 3 && email.length < 17 && password.length > 7 && password.length < 21) {
+        if (password) {
             console.log("success");
             try {
                 let response = await authenticate({email, password});
@@ -55,7 +55,7 @@ export default function Login(props: ILoginProps){
                 console.log(err);
             }
         } else {
-            setErrorMessage("Emails must be between 4 and 16 characters. Passwords must be between 8 and 20 characters.")
+            setErrorMessage("Must give password.")
         }
     }
     
