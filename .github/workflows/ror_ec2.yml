@@ -7,35 +7,33 @@ on:
 
 jobs:
   test:
+    defaults:
+      run:
+        working-directory: backend-ROR
     runs-on: ubuntu-latest
     # normally if you have a server based db engine you put that under `services:` in this portion
 
-    env:
-      # development test or production are your potential options for RAILS_ENV:
-      RAILS_ENV: test
     steps:
-      - name: Install SQLite3
-        run: sudo apt-get update && sudo apt-get install -y sqlite3
 
       - name: Checkout code
         uses: actions/checkout@v3
-        # we want the full backend directory
-        with:
-          path: ./backend-ROR/
-
+        
+      - name: Install SQLite3
+        run: sudo apt-get update && sudo apt-get install -y sqlite3
+        
       # Add or replace dependencies in this section
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
         with:
+          ruby-version: '3.2.2'
           bundler-cache: true
+          
+      - name: Install dependencies
+        run: bundle install
 
       # Add or replace db setup steps below
       - name: Setup database schema
-        run: bin/rails db:schema:load # TODO this command might need to be changed
-
-      # Add or replace test runners here
-      - name: Run Tests
-        run: bin/rake
+        run: rails db:migrate RAILS_ENV=test 
 
       - name: Upload Code Coverage
         uses: actions/upload-artifact@v2
@@ -53,8 +51,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Setup Docker Build
-        uses: docker/setup-build-action@v2
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Get Current Date
         run: echo ::set-output name=date::$(date +%Y%m%d%H%M)
@@ -65,35 +63,19 @@ jobs:
         with:
           # these images are in dockerhub and we are trying to remote add the files into the EC2 instance
           context: .
-          file: ./Dockerfile
+          file: DockerfileRailsLive
           push: true
           # by the way, steps.<step_id>.outputs.<output_name> utilizes the id: date you declared earlier within 'Get Current Date'
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/rails-live
             ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:${{ steps.date.outputs.date }}
-
-  # connect into the EC2
-    aws:
-      env:
-#        AWS_REGION: ${{ secrets.AWS_RAILS_REGION }}
-#        REMOTE_HOST: ${{ secrets.EC2_RAILS_URL }}
-#        REMOTE_USER: "ubuntu"
-    
-      steps:
-        - name: Setup the SSH
-          run:
-            mkdir -p ~/.ssh/
-            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/github-actions-key
-            chmod 600 ~/.ssh/github-actions-key
-            cat >>~/.ssh/config <<END
-            Host ec2
-              HostName ${{ secrets.EC2_RAILS_URL }}
-              User "ubuntu"
-              IdentityFile ~/.ssh/github-actions-key
-              StrictHostKeyChecking no
-            END
-        - name: List the Home Dir
-          run: ssh ec2 'docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && docker stop ruby-app && docker rm ruby-app && docker run -d -p 3000:3000 --name ruby-app ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest
-
-
-
+      - name: Setup the SSH
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_RUBY_EC2 }}
+        # "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_RAILS_URL }} "if sudo docker inspect ruby-app >/dev/null 2>&1; then sudo docker stop ruby-app && sudo docker rm ruby-app; fi && sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && sudo docker run -d -p 3000:3000 --name ruby-app ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest"
+       
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_RAILS_URL }} "if sudo docker inspect ruby-app >/dev/null 2>&1; then sudo docker stop ruby-app && sudo docker rm ruby-app; fi && sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest && sudo docker run -d -p 3000:3000 --name ruby-app ${{ secrets.DOCKERHUB_USERNAME }}/rails-live:latest"
