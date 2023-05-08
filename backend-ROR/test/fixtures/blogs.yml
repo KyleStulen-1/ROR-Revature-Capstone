@@ -6,24 +6,28 @@ xtone:
   content: 'MyString'
   view_count: 3
   user: xtone
+  topics: one
 
 xttwo:
   title: 'MyString'
   content: 'MyString'
   view_count: 1
   user: xttwo
+  topics: one
 
 dustynblog1:
   title: "DBtest1"
   content: "DBtest desc"
   view_count: 10
   user: dustynb1
+  topics: one
 
 dustynblog2:
   title: "DBtest2"
   content: "DBtest desc"
   view_count: 11
   user: dustynb2
+  topics: one
 
 #one:
 #  title: MyString
@@ -42,4 +46,5 @@ jt_one:
   content: "Test"
   view_count: 1
   user_id: 4
+  topics: one
 

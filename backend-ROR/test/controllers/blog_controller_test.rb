@@ -79,9 +79,10 @@ class BlogControllerTest < ActionDispatch::IntegrationTest
 
   test "should create" do
     user = users(:dustynb1).id
+    topic = topics(:one).id
     token = JsonWebToken.encode(user_id: user)
     assert_difference 'Blog.count', 1 do
-      post "/user/#{user}/blog", params: { title: 'Test blog', content: 'Test blog content...'}, 
+      post "/user/#{user}/blog", params: { title: 'Test blog', content: 'Test blog content...', topics_id: topic}, 
       headers: { Authorization: "Bearer #{token}" }, as: :json
       assert_response :created
     end
