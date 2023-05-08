@@ -60,11 +60,12 @@ class BlogControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get index but failed because of wrong id" do
+  test "should get index but empty because id doesn't exist" do
     user = users(:jt_one)
     token = JsonWebToken.encode(user_id: user.id)
-    get "/user/1/blog", headers: {Authorization: "Bearer #{token}"}, as: :json
-    assert_response :unauthorized
+    get "/user/0/blog", headers: {Authorization: "Bearer #{token}"}, as: :json
+    assert_response :ok
+    assert JSON.parse(response.body) == []
   end
 
 
