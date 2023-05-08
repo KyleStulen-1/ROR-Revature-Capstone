@@ -10,16 +10,16 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
-#  adapter: postgresql
-#  database: postgres
-#  username: postgres
-#  password: 1qaz2wsx
-#  host: paul-rev-test.ccgra2mrurtt.us-west-2.rds.amazonaws.com
-#  port: 5432
-#  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#  timeout: 5000
+  # <<: *default
+  # database: db/development.sqlite3
+ adapter: postgresql
+ database: postgres
+ username: postgres
+ password: nCZnuTLzltFgtlRMi4o0
+ host: trng-00001570.chueiwozbnfz.us-east-1.rds.amazonaws.com
+ port: 5432
+ pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+ timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
