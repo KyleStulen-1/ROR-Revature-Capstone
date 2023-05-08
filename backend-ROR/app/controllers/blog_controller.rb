@@ -26,7 +26,7 @@ class BlogController < ApplicationController
     @blog = @user.blogs.find(params[:id])
     if @blog
       Rails.logger.debug("Show action: Blog: #{@blog.id}")
-      render json: {blog: @blog}, status: :ok
+      render json: @blog, status: :ok
     else
       render json: { message: 'Blog does not exist' }, status: :unprocessable_entity
       Rails.logger.error('Show action: Input was invalid')
@@ -111,7 +111,7 @@ class BlogController < ApplicationController
       head :ok
       Rails.logger.info('Delete Action: Blog deleted from database')
     else
-      render json: { error: 'You are not authorized to delete this blog' }, status: :unauthorized
+      render json: { message: 'You are not authorized to delete this blog' }, status: :unauthorized
       Rails.logger.warn('Delete Action: User does not own')
     end
 
@@ -119,7 +119,7 @@ class BlogController < ApplicationController
 
   def indexall
     @blog = Blog.all
-    return render json: {blogs: @blog}
+    return render json: @blog
   end
 
   private

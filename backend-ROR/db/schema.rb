@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_04_184906) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_06_192906) do
   create_table "blogs", force: :cascade do |t|
     t.string "title"
     t.string "content"
@@ -18,6 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_184906) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "topics_id", null: false
+    t.index ["topics_id"], name: "index_blogs_on_topics_id"
     t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 
@@ -46,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_184906) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "blogs", "topics", column: "topics_id"
   add_foreign_key "blogs", "users"
   add_foreign_key "reactions", "blogs", column: "blogs_id"
   add_foreign_key "reactions", "users"
