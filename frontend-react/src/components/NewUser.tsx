@@ -1,17 +1,38 @@
 import { useState, SyntheticEvent } from "react";
 import { User } from "../models/user";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box, Container } from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import axios from "axios";
+import { authAppClient } from "../remote/authenticated-app-client";
+import { styled } from '@mui/system';
+import TextField from '@mui/material/TextField';
 
 interface IUserCreateProps {
     currentUser: User | undefined
 }
 
 const theme = createTheme();
+
+const StyledBox = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '500px',
+    margin: '20px auto',
+    padding: '16px',
+    borderRadius: '4px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    backgroundColor: '#ffffff',
+});
+const StyledTextField = styled(TextField)({
+    marginBottom: '16px',
+});
+const StyledButton = styled(Button)({
+    marginTop: '16px',
+});
 
 export default function NewUser(props: IUserCreateProps){
 
@@ -22,33 +43,41 @@ export default function NewUser(props: IUserCreateProps){
     const [redirect, setRedirect] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    let updateEmail = (e:SyntheticEvent) => {
-        setEmail((e.target as HTMLInputElement).value)
+    const navigate = useNavigate();
+
+    const user = {
+        "email": email,
+        "password": password,
+        "first_name": firstName,
+        "last_name": lastName
     }
 
-    let updatePassword = (e:SyntheticEvent) => {
-        setPassword((e.target as HTMLInputElement).value)
-    }
+    async function submitUser() {
+        setErrorMessage('')
+        if (email && password && firstName && lastName) {
+            try {
+                let response = await authAppClient.post('/user', user)
+                console.log(response)
 
-    let updateFirstName = (e:SyntheticEvent) => {
-        setFirstName((e.target as HTMLInputElement).value)
-    }
-
-    let updateLastName = (e:SyntheticEvent) => {
-        setLastName((e.target as HTMLInputElement).value)
-    }
-
-    let submitUser = () => {
-        console.log("Registered")
+                if (response.status == 201) {
+                    console.log("User created")
+                }
+            } catch (err: any) {
+                console.log(err)
+                setErrorMessage('Something went wrong.')
+            }
+        } else {
+            setErrorMessage('All fields must be filled out.')
+        }
     }
 
     return (
-        props.currentUser && redirect ? <Link to='/newuser' /> :
+        props.currentUser && redirect ? <Link to='/blogs' /> :
         <div>
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
-                    <Box sx={{  marginTop: 8,
+                    <StyledBox sx={{  marginTop: 8,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',}}>
@@ -56,23 +85,20 @@ export default function NewUser(props: IUserCreateProps){
                             Register
                         </Typography>
 
-                    </Box>
-                    <Box sx={{mt: 1}}>
-                        <input type="text" name="Email" id="Email" onChange={updateEmail} placeholder="Email"/>
-                        <br />
-                        <input type="password" name="Password" id="Password" onChange={updatePassword} placeholder="Password"/>
-                        <br />
-                        <input type="text" name="First name" id="firstName" onChange={updateFirstName} placeholder="First name"/>
-                        <br />
-                        <input type="text" name="Last name" id="lastName" onChange={updateLastName} placeholder="Last name"/>
-                        <br />
-                        <Button onClick={submitUser} type="submit" fullWidth
+                    </StyledBox>
+                    <StyledBox sx={{mt: 1}}>
+                        <StyledTextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <StyledTextField type="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value) }/>
+                        <StyledTextField label="First name" value={firstName} onChange={(e) => setFirstName(e.target.value) } />
+                        <StyledTextField label="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+
+                        <StyledButton onClick={submitUser} type="submit" fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}>
                             Register
-                        </Button>
+                        </StyledButton>
                         <p>{errorMessage}</p>
-                    </Box>
+                    </StyledBox>
                 </Container>
             </ThemeProvider>
 
