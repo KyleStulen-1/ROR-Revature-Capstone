@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User } from "../models/user";
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { authenticate } from "../remote/services/session-service"; 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -63,7 +63,7 @@ export default function Login(props: ILoginProps){
     
     return (
         props.currentUser ?
-        <Link to='/blogs' />
+        <><Navigate to='/blogs' /></>
         :
         <StyledBox>
             <Typography component="h1" variant="h5" align="center">
