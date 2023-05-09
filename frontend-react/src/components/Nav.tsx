@@ -14,7 +14,8 @@ interface INavProps {
 
 export default function Nav(props: INavProps){
     function logout() {
-
+        sessionStorage.removeItem('token');
+        props.setCurrentUser(undefined);
     }
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -23,13 +24,21 @@ export default function Nav(props: INavProps){
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Revature Blogs
                     </Typography>
-                    <Button color="inherit"><Link className="link" to="/blogs">Blogs</Link></Button>
-                    <Button color="inherit"><Link className="link" to="/newblog">New Blog</Link></Button>
-                    <Button color="inherit"><Link className="link" to="/myblogs">My Blogs</Link></Button>
-                    <Button color="inherit"><Link className="link" to="/newuser">New User</Link></Button>
-                    <Button color="inherit"><Link className="link" to="/login">Login</Link></Button>
-
-                    <Button color="inherit" onClick={logout}><Link className="link" to="/login">Logout</Link></Button>
+                    {props.currentUser ? (
+                        <>
+                        <Button color="inherit"><Link className="link" to="/blogs">Blogs</Link></Button>
+                        <Button color="inherit"><Link className="link" to="/newblog">New Blog</Link></Button>
+                        <Button color="inherit"><Link className="link" to="/myblogs">My Blogs</Link></Button>
+                        <Button color="inherit" onClick={logout}><Link className="link" to="/login">Logout</Link></Button>
+                        </> 
+                    ) : (
+                        <>
+                        {/* <Button color="inherit"><Link className="link" to="/blogs">Blogs</Link></Button> */}
+                        <Button color="inherit"><Link className="link" to="/newuser">New User</Link></Button>
+                        <Button color="inherit"><Link className="link" to="/login">Login</Link></Button>
+                        </>
+                    )}
+                    
                 </Toolbar>
             </AppBar>
         </Box>
