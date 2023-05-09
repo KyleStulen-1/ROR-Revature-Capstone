@@ -1,7 +1,7 @@
 import axios from "axios";
-
+//ec2-34-229-146-172.compute-1.amazonaws.com
 export const authAppClient = axios.create({
-    baseURL: 'ec2-34-229-146-172.compute-1.amazonaws.com',
+    baseURL: 'http://ec2-34-229-146-172.compute-1.amazonaws.com:3000',
     headers: {
         'Accept': "application/json",
     }
