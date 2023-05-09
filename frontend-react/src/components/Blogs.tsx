@@ -9,41 +9,20 @@ import { updateViewCount } from "../remote/services/blog-service";
 export default function Blogs (){
 
     const [blogs, setBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", user_id:0, user:{first_name:"", last_name:""},readMore:false }]);
-
-    // may need a diff useState for the filtered blogs
     const [fBlogs, setFBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", user_id:0, user:{first_name:"", last_name:""},readMore:false}]);
-    
-
-    const [author, setAuthor] = useState<string>("");
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [selectedBlog, setSelectedBlog] = useState<Boolean[]>([]);
     
     
     useEffect(()=>{
         (async ()=>{
-            // Await for all blogs here
-            // Sort blogs by created/updated dates
-
             const response = await authAppClient.get<BlogAuthor[]>('/blog')
-            console.log(response)
+
             const sortedBlogs = response.data.sort( (b1,b2) =>
                 Date.parse(b2.updated_at) - Date.parse(b1.updated_at)
             )
-            console.log(response);
-            
 
-            // for(var i = 0; i <blogs.length; i++){
-            //     where selectedBlog[i] = setSelectedBlog(false)
-                
-            // }
+            sortedBlogs.forEach((b)=>{ b.readMore = false })
 
-            sortedBlogs.forEach((b)=>{
-                b.readMore=false
-                // setSelectedBlog(()=>{
-                //     selectedBlog?.push(false)
-                // });
-            
-            })
             setBlogs(sortedBlogs)
             setFBlogs(sortedBlogs);
         })();
@@ -74,39 +53,34 @@ export default function Blogs (){
         
         //-------
         
-        if(updatedBlogs[blogIndex].readMore)
-        {
-        await updateViewCount(blog.user_id, blog.id)
-        updatedBlogs[blogIndex] = {
-            ...updatedBlogs[blogIndex],
-            view_count: updatedBlogs[blogIndex].view_count
-            }
-        
+        if(updatedBlogs[blogIndex].readMore) {
+            await updateViewCount(blog.user_id, blog.id)
+            updatedBlogs[blogIndex] = {
+                ...updatedBlogs[blogIndex],
+                view_count: updatedBlogs[blogIndex].view_count
+                }
         }
-        setFBlogs(updatedBlogs);
-        setBlogs(updatedBlogs)
+
+        const response = await authAppClient.get<BlogAuthor[]>('/blog')
+
+        const sortedBlogs = response.data.sort( (b1,b2) =>
+            Date.parse(b2.updated_at) - Date.parse(b1.updated_at)
+        )
+
+        sortedBlogs.forEach((b)=>{ b.readMore = false })
+        sortedBlogs[blogIndex].readMore=updatedBlogs[blogIndex].readMore
+        setFBlogs(sortedBlogs);
+        setBlogs(sortedBlogs)
     }
 
-    function retreieveContent(bID:number)
-    {
+    function retreieveContent(bID:number) {
       const blog=blogs.filter(b=>b.id===bID)
-      console.log("RETREIEVE CONTENT: "+blog[0].readMore);
-      if(blog[0].readMore)
-      {
-        return "TRUE"+blog[0].content
+      if(blog[0].readMore) {
+        return blog[0].content
+      } else {
+        return blog[0].content.slice(0,10).concat("...");
       }
-      else
-      {
-        return "FALSE"+blog[0].content.slice(0,10).concat("...");
-      }
-      //return blog[0].content
     }
-
-
-
-
-
-
 
     return (<>
 
@@ -150,8 +124,6 @@ export default function Blogs (){
             )) : <p id="search-msg">No Blogs Found</p>
         }
 
-        <div id="footer"> </div>
-
         </>)
 }
 
@@ -162,11 +134,4 @@ function formatDate(dateString:string) {
     const day = String(date.getDate()).padStart(2, '0');
     
     return `${year}-${month}-${day}`;
-  }
-  
-  function formatContent(inCont: string)
-  {
-    const f_content = inCont.slice(0,50).concat("...");
-
-    return f_content;
-  }
+}
