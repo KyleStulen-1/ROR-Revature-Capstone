@@ -74,10 +74,10 @@ Blog.create!(title: 'Best gym in the D.C. area?',
              content: 'Sign up for a membership today...',
              user_id: user2.id,
              topics_id: Topic.find_by(name: 'Data-Driven Fitness').id,
-             view_count: 2)
+             view_count: 3)
 
 Blog.create!(title: 'Reasons why you shouldn\'t say you\'re good at math?',
              content: 'If a plane and a car both leave Orlando heading towards Washington D.C...',
              user_id: user2.id,
              topics_id: Topic.find_by(name: 'Programming Languages').id,
-             view_count: 2)
+             view_count: 4)
