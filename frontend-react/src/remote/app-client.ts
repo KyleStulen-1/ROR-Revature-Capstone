@@ -1,7 +1,7 @@
 import axios from "axios";
-
+//http://ec2-34-229-146-172.compute-1.amazonaws.com
 export const appClient = axios.create({
-    baseURL: 'ec2-34-229-146-172.compute-1.amazonaws.com',
+    baseURL: 'http://localhost:3000',
     headers: {
         'Content-Type': 'application/json'
     }

@@ -4,8 +4,12 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 import {useState} from "react";
-
-
+import {authAppClient} from "../remote/authenticated-app-client";
+import {User} from "../models/user";
+import { useNavigate } from 'react-router-dom';
+interface IUserCreateProps {
+    currentUser: User | undefined
+}
 type Props ={
     onSubmit: (title:string, content:string) => void;
 };
@@ -31,13 +35,28 @@ const StyledButton = styled(Button)({
 {/* Defined functional component - accepts a single prop called onSubmit and returns a component that renders a form for creating a new blog post */}
 {/* Defined two state variables - that will use user input */}
 {/* = ({ onSubmit }: Props) => */}
-export default function NewBlog() {
+export default function NewBlog(props: IUserCreateProps) {
     const[title,setTitle] = useState<any>();
     const [content, setContent] = useState<any>();
-
+    const navigate = useNavigate();
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        //onSubmit(title, content);
+        createBlog(title, content);
+        navigate(`/myblogs`);
+    }
+    
+    // Axios function to create a new blog post
+    async function createBlog(title: string, content: string) {
+        try {
+            const response = await authAppClient.post(`/user/${props.currentUser?.user_id}/blog/`, {
+                title: title,
+                content: content,
+                user_id: props.currentUser?.user_id
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
     return (
         <StyledBox>
@@ -59,9 +78,4 @@ export default function NewBlog() {
         </StyledBox>
     );
 
-};
-
-
-
-
-
+    };
