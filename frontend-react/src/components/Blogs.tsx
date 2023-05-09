@@ -124,8 +124,6 @@ export default function Blogs (){
             )) : <p id="search-msg">No Blogs Found</p>
         }
 
-        <div id="footer"> </div>
-
         </>)
 }
 
