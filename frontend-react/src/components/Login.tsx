@@ -76,6 +76,7 @@ export default function Login(props: ILoginProps){
             />
             <StyledTextField
                 label="Password"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
