@@ -11,6 +11,8 @@ import Login from "./components/Login";
 import EditBlogs from "./components/EditBlogs";
 import {User} from "./models/user"
 
+import {BlogDetails} from "./components/BlogDetails";
+
 function App() {
 
   const [principal, setPrincipal] = useState<User>();
@@ -25,6 +27,7 @@ function App() {
           <Route path="/myblogs" element={<MyBlogs currentUser={principal} />} />
           <Route path="/newuser" element={<NewUser currentUser={principal}/>} />
           <Route path="/login" element={<Login currentUser={principal} setCurrentUser={setPrincipal}/>} />
+          <Route path="/blogdetails/:user_id/:id" element={<BlogDetails currentUser={principal}/>} />
         </Routes>
       </BrowserRouter>
   );
