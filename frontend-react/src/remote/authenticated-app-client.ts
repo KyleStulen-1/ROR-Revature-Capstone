@@ -1,3 +1,23 @@
+<<<<<<< HEAD
+import axios from "axios";
+
+export const authAppClient = axios.create({
+    baseURL: 'http://ec2-34-229-146-172.compute-1.amazonaws.com:3000',
+    headers: {
+        'Accept': "application/json",
+    }
+});
+
+authAppClient.interceptors.request.use(
+    (request) => {
+        if(request.headers){
+            request.headers['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
+        }
+
+        return request;
+    }
+)
+=======
 import axios from "axios";
 //http://ec2-34-229-146-172.compute-1.amazonaws.com:3000
 export const authAppClient = axios.create({
@@ -16,3 +36,4 @@ authAppClient.interceptors.request.use(
         return request;
     }
 )
+>>>>>>> 45fc7a27d6338a2678edb1f9c97a99851b454c03

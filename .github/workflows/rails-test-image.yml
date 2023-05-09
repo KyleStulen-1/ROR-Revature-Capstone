@@ -1,4 +1,4 @@
-name: Rails Test Image
+name: "Rails Test Image"
 
 on:
   workflow_dispatch:
