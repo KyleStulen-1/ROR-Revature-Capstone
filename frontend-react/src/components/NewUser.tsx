@@ -59,7 +59,7 @@ export default function NewUser(props: IUserCreateProps){
                 let response = await authAppClient.post('/user', user)
                 console.log(response)
 
-                if (response.status == 201) {
+                if (response.status === 201 || response.status === 200) {
                     console.log("User created")
                     navigate('/blogs')
                 }
