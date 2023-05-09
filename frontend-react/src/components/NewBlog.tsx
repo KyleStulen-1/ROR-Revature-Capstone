@@ -46,18 +46,22 @@ export default function NewBlog(props: IUserCreateProps) {
     }
     
     // Axios function to create a new blog post
+    // topics is not implemented so its hardcoded as 1 
     async function createBlog(title: string, content: string) {
         try {
             const response = await authAppClient.post(`/user/${props.currentUser?.user_id}/blog/`, {
                 title: title,
                 content: content,
-                user_id: props.currentUser?.user_id
+                user_id: props.currentUser?.user_id,
+                topics_id: 1,
+                view_count: 0
             });
         }
         catch (error) {
             console.log(error);
         }
     }
+
     return (
         <StyledBox>
             <StyledTextField
