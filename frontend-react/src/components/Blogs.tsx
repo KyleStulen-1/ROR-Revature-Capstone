@@ -4,14 +4,16 @@ import { authAppClient } from "../remote/authenticated-app-client";
 
 import "../css/blog.css"
 import { updateViewCount } from "../remote/services/blog-service";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Blogs (){
 
     const [blogs, setBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", user_id:0, user:{first_name:"", last_name:""},readMore:false }]);
-    const [fBlogs, setFBlogs] = useState<BlogAuthor[]>([{id: 0, title:"", content:"", view_count:0, created_at:"",updated_at:"", user_id:0, user:{first_name:"", last_name:""},readMore:false}]);
+    const [fBlogs, setFBlogs] = useState<BlogAuthor[]|undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState<string>("");
-    
+    //LOAD BEARING DRYWALL
+    const navigate = useNavigate()
     
     useEffect(()=>{
         (async ()=>{
@@ -42,35 +44,9 @@ export default function Blogs (){
 
     async function handleReadmore(blog:BlogAuthor){
 
-        const blogIndex = fBlogs.indexOf(blog);
-        const updatedBlogs = [...fBlogs];
+        await updateViewCount(blog.user_id, blog.id)
+        navigate(`/blogdetails/${blog.user_id}/${blog.id}`);
         
-        updatedBlogs[blogIndex] = {
-        ...updatedBlogs[blogIndex],
-        readMore: !updatedBlogs[blogIndex].readMore
-        };
-        console.log("STATE2")
-        
-        //-------
-        
-        if(updatedBlogs[blogIndex].readMore) {
-            await updateViewCount(blog.user_id, blog.id)
-            updatedBlogs[blogIndex] = {
-                ...updatedBlogs[blogIndex],
-                view_count: updatedBlogs[blogIndex].view_count
-                }
-        }
-
-        const response = await authAppClient.get<BlogAuthor[]>('/blog')
-
-        const sortedBlogs = response.data.sort( (b1,b2) =>
-            Date.parse(b2.updated_at) - Date.parse(b1.updated_at)
-        )
-
-        sortedBlogs.forEach((b)=>{ b.readMore = false })
-        sortedBlogs[blogIndex].readMore=updatedBlogs[blogIndex].readMore
-        setFBlogs(sortedBlogs);
-        setBlogs(sortedBlogs)
     }
 
     function retreieveContent(bID:number) {
@@ -91,8 +67,8 @@ export default function Blogs (){
         </div>
 
         {
-            fBlogs.length ? (
-                fBlogs.map(b => 
+            fBlogs?.length ? (
+                fBlogs?.map(b => 
                     <div key = {b.id} className="blog">
                     <div className="author-info">
                         <p id="blog-title">{b.title}</p>
