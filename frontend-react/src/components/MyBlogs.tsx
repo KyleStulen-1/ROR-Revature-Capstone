@@ -56,12 +56,13 @@ export default function MyBlogs (props: IUserCreateProps) {
     // Axios get function for all the user's blogs
     useEffect(() => {
         async function getBlogs() {
-            try {
-                const response = await authAppClient.get(`/user/${props.currentUser?.user_id}/blog`)
-                setContent(response.data)
-            } catch (error) {
-                console.log(error)
-            }
+            authAppClient.get(`/user/${props.currentUser?.user_id}/blog`)
+                .then((response)=>{
+                    setContent(response.data)
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
         }
         getBlogs()
         console.log(props.currentUser?.user_id)
